@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-area" (click)="irA('inicio')">
+      <img src="assets/logo.png" alt="Logo Restaurante" class="logo-img">
+      <span class="brand-name">Cortes Premium</span>
+    </div>
+    <ul class="nav-links">
+      <li><button (click)="irA('inicio')">Inicio</button></li>
+      <li><button (click)="irA('catalogo')">Menú/Catálogo</button></li>
+      <li><button (click)="irA('carrito')" class="cart-btn">
+        🛒 Carrito <span class="badge">{{ totalItems() }}</span>
+      </button></li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,29 @@
+.cart {
+  max-width: 600px;
+  margin: 2rem auto;
+  border: none;
+  border-radius: 16px;
+  padding: 24px;
+  background: #fdfdfd;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.title { border-bottom: 2px solid #f39c12; padding-bottom: 10px; margin-bottom: 20px; color: #2c3e50; }
+.item {
+  border: none;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+  transition: transform 0.2s;
+}
+.item:hover { transform: translateX(5px); }
+.total {
+  font-size: 1.4rem;
+  color: #27ae60;
+  text-align: right;
+  border-top: 2px dashed #ddd;
+  padding-top: 15px;
+}
+.btn.purple {
+  background: #d35400; /* Color óxido/carne asada */
+  font-weight: bold;
+  text-transform: uppercase;
+}
