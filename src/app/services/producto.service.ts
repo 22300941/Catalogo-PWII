@@ -5,14 +5,14 @@ import { Product } from '../models/producto.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
-  constructor(private http: HttpClient) {}
-  private apiUrl = 'http://localhost:3000/products';
-  
-  getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+  private http=inject(HttpClient);
+  private apiUrl='http://localhost:3000/api/productos';
+  getAll():Observable<Product[]>{
+    return this.http.get<Product[]>(this.apiUrl)
+  }
   }
 
-  private parseProductsXml(xmlText: string): Product[] {
+ /* private parseProductsXml(xmlText: string): Product[] {
     const parser = new DOMParser();
     const doc = parser.parseFromString(xmlText, 'application/xml');
 
@@ -48,5 +48,4 @@ export class ProductsService {
     const value = this.getText(parent, tag).toLowerCase();
     return value === 'true' || value === '1' || value === 'yes';
   }
-
-}
+*/

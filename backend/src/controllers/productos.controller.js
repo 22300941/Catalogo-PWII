@@ -5,7 +5,7 @@ const getProductos = (req, res) => {
         if (error) {
             return res.status(500).json({ error: 'Error al obtener los productos' });
         }
-        res.json(results);
+        res.json(resultados);
     });
 };
 
