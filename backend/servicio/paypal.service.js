@@ -4,7 +4,7 @@ function getBasicAuth(){
 }
 
 export async function getAccessToken(){
-    const reponse = await fetch('${paypalConfig.baseUrl}/v1/oauth2/token', {
+    const response = await fetch(`${paypalConfig.baseUrl}/v1/oauth2/token`, {
         method: 'POST',
         headers: {
             'Authorization': `Basic ${getBasicAuth()}`,

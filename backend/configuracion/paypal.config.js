@@ -3,3 +3,5 @@ export const paypalConfig = {
     clientSecret: process.env.PAYPAL_CLIENT_SECRET,
     baseUrl: process.env.PAYPAL_BASE_URL
 };
+
+module.exports = { paypalConfig };

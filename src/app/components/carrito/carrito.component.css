@@ -27,3 +27,24 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.btn.paypal {
+  background: #0070ba;
+  color: white;
+  font-weight: bold;
+}
+
+.btn.paypal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mensaje-pago {
+  margin-top: 1rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f0f4ff;
+  border: 1px solid #c0cfff;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}

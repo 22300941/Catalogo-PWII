@@ -25,7 +25,14 @@
     <div class="actions">
       <button class="btn" (click)="vaciar()">Vaciar carrito</button>
       <button class="btn purple" (click)="exportarXML()">Exportar Recibo XML</button>
+      <button class="btn paypal" (click)="pagar()" [disabled]="pagando()">
+        {{ pagando() ? 'Procesando...' : 'Pagar con PayPal' }}
+      </button>
     </div>
+
+    @if (mensajePago()) {
+      <p class="mensaje-pago">{{ mensajePago() }}</p>
+    }
   }
 </section>
 
