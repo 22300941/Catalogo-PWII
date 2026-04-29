@@ -38,7 +38,7 @@ export class CarritoComponent implements OnInit {
     if (document.getElementById('paypal-sdk')) return;
     const script = document.createElement('script');
     script.id = 'paypal-sdk';
-    script.src = `https://www.paypal.com/sdk/js?client-id=${environment.paypalClientId}&currency=MXN`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${environment.paypalClientId}&currency=MXN&intent=capture`;
     script.onload = () => this.renderBotonPaypal();
     document.body.appendChild(script);
   }
@@ -54,11 +54,14 @@ export class CarritoComponent implements OnInit {
           return this.paypalService.crearOrden({
             items: this.carrito().map(p => ({ nombre: p.name, cantidad: 1, precio: p.price })),
             total: this.total()
-          }).toPromise().then((orden: any) => orden.id);
+          }).toPromise().then((orden: any) => {
+            console.log('Orden creada:', orden);
+            return orden.id;
+          });
         },
-        onApprove: (_: any, actions: any) => {
-          return actions.order.capture().then((details: any) => {
-            this.mensajePago.set(`Pago completado por ${details.payer.name.given_name}`);
+        onApprove: (data: any, actions: any) => {
+          return this.paypalService.capturarOrden(data.orderID).toPromise().then((details: any) => {
+            this.mensajePago.set(`✅ Pago completado`);
             this.carritoService.vaciar();
           });
         },
