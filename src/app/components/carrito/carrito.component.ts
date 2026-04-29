@@ -1,4 +1,4 @@
-import { Component, computed, signal, OnInit } from '@angular/core';
+import { Component, computed, signal, OnInit, inject, effect } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { CarritoService } from '../../services/carrito.service';
 import { PaypalService } from '../../services/paypal.service';
@@ -12,15 +12,23 @@ import { environment } from '../../../enviroments/enviroment';
   styleUrls: ['./carrito.component.css'],
 })
 export class CarritoComponent implements OnInit {
+  private carritoService = inject(CarritoService);
+  private paypalService = inject(PaypalService);
+
   carrito = this.carritoService.productos;
   total = computed(() => this.carritoService.total());
   pagando = signal(false);
   mensajePago = signal('');
 
-  constructor(
-    private carritoService: CarritoService,
-    private paypalService: PaypalService
-  ) {}
+  constructor() {
+    effect(() => {
+      if (this.carrito().length > 0) {
+        if ((window as any).paypal) {
+          this.renderBotonPaypal();
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this.cargarSDKPaypal();
@@ -36,23 +44,29 @@ export class CarritoComponent implements OnInit {
   }
 
   renderBotonPaypal() {
-    (window as any).paypal.Buttons({
-      createOrder: () => {
-        return this.paypalService.crearOrden({
-          items: this.carrito().map(p => ({ nombre: p.name, cantidad: 1, precio: p.price })),
-          total: this.total()
-        }).toPromise().then((orden: any) => orden.id);
-      },
-      onApprove: (_: any, actions: any) => {
-        return actions.order.capture().then((details: any) => {
-          this.mensajePago.set(`✅ Pago completado por ${details.payer.name.given_name}`);
-          this.carritoService.vaciar();
-        });
-      },
-      onError: (err: any) => {
-        this.mensajePago.set(`❌ Error en el pago: ${err}`);
-      }
-    }).render('#paypal-buttons');
+    setTimeout(() => {
+      const contenedor = document.getElementById('paypal-buttons');
+      if (!contenedor) return;
+      if (contenedor.childElementCount > 0) return;
+
+      (window as any).paypal.Buttons({
+        createOrder: () => {
+          return this.paypalService.crearOrden({
+            items: this.carrito().map(p => ({ nombre: p.name, cantidad: 1, precio: p.price })),
+            total: this.total()
+          }).toPromise().then((orden: any) => orden.id);
+        },
+        onApprove: (_: any, actions: any) => {
+          return actions.order.capture().then((details: any) => {
+            this.mensajePago.set(`Pago completado por ${details.payer.name.given_name}`);
+            this.carritoService.vaciar();
+          });
+        },
+        onError: (err: any) => {
+          this.mensajePago.set(`Error en el pago: ${err}`);
+        }
+      }).render('#paypal-buttons');
+    }, 300);
   }
 
   quitar(id: number) { this.carritoService.quitar(id); }
