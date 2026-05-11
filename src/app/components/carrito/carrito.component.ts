@@ -61,7 +61,7 @@ export class CarritoComponent implements OnInit {
         },
         onApprove: (data: any, actions: any) => {
           return this.paypalService.capturarOrden(data.orderID).toPromise().then((details: any) => {
-            this.mensajePago.set(`✅ Pago completado`);
+            this.mensajePago.set(`Pago completado`);
             this.carritoService.vaciar();
           });
         },
